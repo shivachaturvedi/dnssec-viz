@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"
+          integrity="sha512-M2wvCLH6DSRazYeZRIm1JnYyh22purTM+FDB5CsyxtQJYeKq83arPe5wgbNmcFXGqiSH2XR8dT/fJISVA1r/zQ=="
+          crossorigin=""/>
+    <link rel='stylesheet' href='https://unpkg.com/leaflet.markercluster@1.2.0/dist/MarkerCluster.css'/>
+    <link rel='stylesheet' href='https://unpkg.com/leaflet.markercluster@1.2.0/dist/MarkerCluster.Default.css'/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+<main role="main" class="container-fluid">
+    <div class="row" id="map-container">
+        <div class="col col-md-9 map" id="map"></div>
+        <div class="col col-md-3" id="detailed-view">
+            <div id="histogram-container" class="row card">
+                <div class="card-header active">
+                    Regional Distribution of Algorithm Support
+                </div><br/>
+                <div id="histogram" class="column-md-12">
+
+                </div>
+            </div><br/>
+            <div id="top-algos" class="row list-group">
+                <ul></ul>
+            </div>
+            <div class="row list-group" id="resolver-list">
+                <ul>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row topmargin" style="border: 1px solid rgba(0,0,0,.125)">
+        <div class="col-md-6" style="border: 1px solid rgba(0,0,0,.125)">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h5>ISP's with:</h5>
+                </div>
+            </div>
+
+            <div class="row isp">
+                <div class="col-md-4">
+
+                    <div class="card" id="maxalgo">
+                        <div class="card-header">
+                            Max unique algorithm support
+                        </div>
+                        <ul class="list-group list-group-flush">
+
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <div class="card" id="algo3">
+                        <div class="card-header">
+                            3 Algorithm Support
+                        </div>
+                        <ul class="list-group list-group-flush">
+
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <div class="card" id="max-dnssec">
+                        <div class="card-header">
+                            Max. DNSSEC resolvers
+                        </div>
+                        <ul class="list-group list-group-flush">
+
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-6" style="border: 1px solid rgba(0,0,0,.125)">
+            <div class="row region">
+                <div class="col-md-12 text-center">
+                    <h5>Interesting Regions with:</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+
+                    <div class="card" id="region-maxalgo">
+                        <div class="card-header">
+                            Max unique algorithms
+                        </div>
+                        <ul class="list-group list-group-flush">
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card" id="region-3algo">
+                        <div class="card-header">
+                            3 algorithm support
+                        </div>
+                        <ul class="list-group list-group-flush">
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card" id="regions-dnssec">
+                        <div class="card-header">
+                            Max. DNSSEC support(%)
+                        </div>
+                        <ul class="list-group list-group-flush">
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"
+        integrity="sha512-lInM/apFSqyy1o6s89K4iQUKg6ppXEgsVxT35HbzUupEVRh2Eu9Wdl4tHj7dZO0s1uvplcYGmt3498TtHq+log=="
+        crossorigin=""></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.2.0/leaflet.markercluster.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+        integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+        integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+        crossorigin="anonymous"></script>
+<script src="/javascripts/script.js"></script>
+</body>
+</html>
